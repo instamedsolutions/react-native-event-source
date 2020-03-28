@@ -59,8 +59,8 @@ var EventSource = function(url, options) {
 
       xhr.onreadystatechange = function() {
         if (
-          eventsource.readyState == 3 ||
-          (eventsource.readyState == 4 && eventsource.status == 200)
+          this.readyState == 3 ||
+          (this.readyState == 4 && this.status == 200)
         ) {
           // on success
           if (eventsource.readyState == eventsource.CONNECTING) {
@@ -112,11 +112,11 @@ var EventSource = function(url, options) {
             }
           }
 
-          if (eventsource.readyState == 4) pollAgain(interval);
+          if (this.readyState == 4) pollAgain(interval);
 
           // don't need to poll again, because we're long-loading
         } else if (eventsource.readyState !== eventsource.CLOSED) {
-          if (eventsource.readyState == 4) {
+          if (this.readyState == 4) {
             // and some other status
             eventsource.dispatchEvent('connection-error', {
               type: 'connection-error',
@@ -124,7 +124,7 @@ var EventSource = function(url, options) {
               message: this.responseText,
             });
             pollAgain(interval);
-          } else if (eventsource.readyState == 0) {
+          } else if (this.readyState == 0) {
             // likely aborted
             pollAgain(interval);
           }
